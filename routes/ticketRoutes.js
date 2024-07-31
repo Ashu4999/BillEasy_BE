@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { requestParamsValidate } = require("../middlewares");
-const { createTicket, getTickets, assignTicket, getTicket } = require("../controllers/ticketController");
+const { createTicket, getTickets, assignTicket, getTicket, getAnalytics } = require("../controllers/ticketController");
 
 const createTicketSchema = {
     body: Joi.object({
@@ -18,6 +18,7 @@ const createTicketSchema = {
 
 router
     .post("/", requestParamsValidate(createTicketSchema), createTicket)
+    .get("/analytics", getAnalytics)
     .get("/", getTickets)
     .get("/:ticketId", getTicket)
     .put("/:ticketId/assign", assignTicket);

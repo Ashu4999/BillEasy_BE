@@ -125,7 +125,44 @@ const assignTicket = async (req, res) => {
             message: customeError || Exception.message || Exception.toString(),
         });
     }
-}
+};
 
+const getAnalytics = async (req, res) => {
+    try {
+        let finalData = {};
+        let allTicket = await DBModels.ticket.findAll();
 
-module.exports = { createTicket, getTickets, getTicket, assignTicket };
+        let statusCountQuery = `select count(*), status from tickets group by status;`;
+        let priorityCountQuery = `select count(*), priority from tickets group by priority;`;
+        let typeCountQuery = `select count(*), type from tickets group by type;`;
+
+        let [statusCountData] = await sequelize.query(statusCountQuery);
+        let [priorityCountData] = await sequelize.query(priorityCountQuery);
+        let [typeCountData] = await sequelize.query(typeCountQuery);
+
+        let statusCountObject = statusCountData.reduce((acc, curr) => { acc[curr.status] = curr.count; return acc; } ,{});
+        let priorityCountObject = priorityCountData.reduce((acc, curr) => { acc[curr.priority] = curr.count; return acc; } ,{});
+        let typeCountObject = typeCountData.reduce((acc, curr) => { acc[curr.type] = curr.count; return acc; } ,{});
+
+        finalData = {
+            totalTickets: allTicket.length,
+            "closedTickets": statusCountObject["closed"],
+            "openTickets":  statusCountObject["open"],
+            "inProgressTickets": statusCountObject["in-progress"],
+            priorityDistribution: priorityCountObject,
+            typeDistribution: typeCountObject,
+            tickets: allTicket
+        };
+        return res.send(finalData);
+    } catch (Exception) {
+        let customeError = null;
+        if (Exception.name === "SequelizeUniqueConstraintError") {
+            customeError = Exception.errors[0].message;
+        }
+        return res.status(Exception.code || 500).json({
+            message: customeError || Exception.message || Exception.toString(),
+        });
+    }
+};
+
+module.exports = { createTicket, getTickets, getTicket, assignTicket, getAnalytics };
