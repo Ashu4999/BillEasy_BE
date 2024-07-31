@@ -20,14 +20,6 @@ const userCreateSchema = {
     }),
 };
 
-const getUserSchema = {
-    query: Joi.object({
-      uuids: Joi.string(),
-      names: Joi.string(),
-      emails: Joi.string(),
-    }),
-  };
-
 router.get("/", getUser).post("/", requestParamsValidate(userCreateSchema), createUser);
 
 module.exports = router;

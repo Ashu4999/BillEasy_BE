@@ -11,7 +11,6 @@ const loginSchema = {
     }),
 };
 
-// router.post("/register", requestParamsValidate(registerSchema), register);
 router.post("/login", requestParamsValidate(loginSchema), login);
 
 module.exports = router;

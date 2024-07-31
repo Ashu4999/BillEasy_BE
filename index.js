@@ -13,8 +13,8 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", authRoutes);
 app.use(authVerify);
-app.use("/user", userRoutes);
-app.use("/ticket", ticketRoutes);
+app.use("/users", userRoutes);
+app.use("/tickets", ticketRoutes);
 
 app.all("*", (req, res) => {
   return res.status(404).send("Not Found");

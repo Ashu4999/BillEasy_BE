@@ -50,15 +50,7 @@ const login = async (req, res) => {
             message: customeError || Exception.message || Exception.toString(),
         });
     }
-}
-
-// const register = (req, res) => {
-//     try {
-//         return res.send("Register API");
-//     } catch (Exception) {
-//         return res.send(Exception.toString());
-//     }
-// }
+};
 
 module.exports = { login };
 

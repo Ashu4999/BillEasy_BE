@@ -4,20 +4,8 @@ const { Op } = require("sequelize");
 
 const getUser = async (req, res) => {
     try {
-        const { uuids, names, emails } = req.query;
         let where = {};
-        // if (uuids) {
-        //     where["id"] = { [Op.in]: uuids.split(",") };
-        // }
-
-        // if (names) {
-        //     where["name"] = { [Op.in]: names.split(",") };
-        // }
-
-        // if (emails) {
-        //     where["email"] = { [Op.in]: emails.split(",") };
-        // }
-
+        
         const users = await DBModels.user.findAll({
             where,
             attributes: { exclude: ["password"] },

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { requestParamsValidate } = require("../middlewares");
-const { createTicket, getTickets, assignTicket } = require("../controllers/ticketController");
+const { createTicket, getTickets, assignTicket, getTicket } = require("../controllers/ticketController");
 
 const createTicketSchema = {
     body: Joi.object({
@@ -16,10 +16,10 @@ const createTicketSchema = {
     }),
 };
 
-// router.post("/register", requestParamsValidate(registerSchema), register);
 router
     .post("/", requestParamsValidate(createTicketSchema), createTicket)
     .get("/", getTickets)
+    .get("/:ticketId", getTicket)
     .put("/:ticketId/assign", assignTicket);
 
 module.exports = router;
