@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-// const apiEndpoint = 'http://localhost:7000/user'; 
+// const apiEndpoint = 'http://localhost:7000/users'; 
 const apiEndpoint = 'http://localhost:7000/tickets';
-let bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1vbnRpIEd1bW1vcnkiLCJpZCI6ImU1NDYwMDIzLWQyOWItNGQ1OS04YmQxLTAzMzYzYzM3MDI4YiIsImlhdCI6MTcyMjQ1MzQyOSwiZXhwIjoxNzIyNDU1MjI5fQ.V8fOc-T3G502n_LldBC1wXjc2BD_eIGS33uTCAQWMrk";
+let bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1vbnRpIEd1bW1vcnkiLCJpZCI6ImQ1MDk4NzEwLTNkODYtNGI3ZC05ZTEwLTRmYWE4NGI5MTk1ZiIsImlhdCI6MTcyMjQ1NzQwNCwiZXhwIjoxNzIyNDU3NzA0fQ.G_68CcUsfWTu00CUpn75yIMzp6dda_GhiT8ZgDJolz8";
 
 // Example data to send in each request
 // const dataList = [
@@ -955,12 +955,14 @@ const dataList = [
 // Function to send a POST request
 const postData = async (data) => {
     try {
-        const response = await axios.post(apiEndpoint, data, {
+        const response = await axios.post(apiEndpoint, data, 
+            {
             headers: {
                 'Authorization': `Bearer ${bearerToken}`,
                 'Content-Type': 'application/json'
             }
-        });
+        }
+        );
         console.log('Data created successfully:', response.data);
     } catch (error) {
         console.error('Error creating data:', error.message);
