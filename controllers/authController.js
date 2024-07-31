@@ -52,5 +52,45 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { login };
+const refreshToken = async (req, res) => {
+    try {
+      const cookies = req.cookies;
+      console.log(cookies);
+      if (!cookies?.jwt) return res.sendStatus(403);
+  
+      let refreshToken = cookies?.jwt;
+  
+      let foundUser = await DBModels.user.findOne({ where: { refreshToken } });
+  
+      if (!foundUser) return res.sendStatus(403);
+  
+      jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+          //throwing err if token username and DB token username not matched
+          if (err || decoded.username != foundUser.name)
+            return res.sendStatus(403);
+  
+          const accessToken = jwt.sign(
+            {
+              username: decoded.username,
+              id: decoded.id,
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "5m" }
+          );
+  
+          return res
+            .status(201)
+            .json({ message: "Access token created", accessToken });
+        }
+      );
+    } catch (Exception) {
+      console.log(Exception);
+      return res.status(500).json({ message: "Something went wrong" });
+    }
+  };
+
+module.exports = { login, refreshToken };
 
